@@ -170,16 +170,17 @@ static pa_hook_result_t unlink_client_cb (pa_core *core, pa_client *client, void
 		}
 	}
 
+	if (!is_phone)
+		return PA_HOOK_OK;
+
 	/* were there other phones ? */
 
-	if (is_phone) {
-		other_phones = false;
-		for (idx = 0; idx < u->client_count; idx++) {
-			client_t = u->clients[idx];
-			if (client_t->role && (strcmp (client_t->role, "phone") == 0)) {
-				other_phones = true;
-				break;
-			}
+	other_phones = false;
+	for (idx = 0; idx < u->client_count; idx++) {
+		client_t = u->clients[idx];
+		if (client_t->role && (strcmp (client_t->role, "phone") == 0)) {
+			other_phones = true;
+			break;
 		}
 	}
 
